@@ -1,10 +1,7 @@
 from django.contrib import admin
-from django.db.models import Count
-
-
 from .models import  Journey, Project, ProjectCategory,SkillCategory, Skill
 from .models import AboutProfile, AboutFact,HeroSection,ContactInfo, ContactMessage
-from .models import PageView, ProjectClick
+
 
 
 @admin.register(ProjectCategory)
@@ -78,31 +75,3 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'subject', 'created_at')
     readonly_fields = ('name', 'email', 'subject', 'message', 'created_at')
     search_fields = ('name', 'email', 'subject', 'message')
-
-
-
-@admin.register(PageView)
-class PageViewAdmin(admin.ModelAdmin):
-    list_display = ('path', 'ip_address', 'formatted_timestamp')
-    list_filter = ('path', 'timestamp')
-    search_fields = ('path', 'ip_address')
-    readonly_fields = ('path', 'ip_address', 'user_agent', 'timestamp')
-
-    # Custom date format for cleaner display
-    def formatted_timestamp(self, obj):
-        return obj.timestamp.strftime('%b %d, %Y - %I:%M %p')
-    formatted_timestamp.short_description = 'Logged At'
-
-    # Disable manual creation of page views in Admin UI
-    def has_add_permission(self, request):
-        return False
-
-
-@admin.register(ProjectClick)
-class ProjectClickAdmin(admin.ModelAdmin):
-    list_display = ('project', 'click_type', 'timestamp')
-    list_filter = ('click_type', 'project')
-    search_fields = ('project__title',)
-
-    def has_add_permission(self, request):
-        return False
