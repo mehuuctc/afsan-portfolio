@@ -1,0 +1,37 @@
+# Environment files (contains secret keys & API credentials)
+.env
+.env.*
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+
+# Local Database & SQLite
+*.sqlite3
+*.db
+db.sqlite3
+
+
+# Static & Media uploads (if generated locally)
+staticfiles/
+media/
+
+# IDE & OS configuration files
+.vscode/
+.idea/
+.DS_Store
+
+*.log
+
+
+
+
+
