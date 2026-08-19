@@ -1,15 +1,9 @@
 import resend
 
-from django.db.models import Count
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.conf import settings
-
-
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-
 
 
 from django.db.models import Prefetch
@@ -17,11 +11,11 @@ from .forms import ContactForm
 
 from .models import (
     Project, Journey,ProjectCategory,SkillCategory, Skill,
-    AboutProfile, AboutFact, HeroSection,ContactInfo,ProjectClick
+    AboutProfile, AboutFact, HeroSection,ContactInfo
 )
 
-from django_ratelimit.decorators import ratelimit
-@ratelimit(key='ip', rate='5/m', method='POST', block=True)
+
+
 def index(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -61,11 +55,9 @@ def index(request):
     # Query context data
     hero = HeroSection.objects.filter(is_active=True).first()
     categories = ProjectCategory.objects.all()
-
-    projects = Project.objects.filter(is_active=True).select_related('category').prefetch_related('clicks')
-
-
+    projects = Project.objects.filter(is_active=True).select_related('category')
     journey_items = Journey.objects.filter(is_active=True)
+    
     skill_categories = SkillCategory.objects.filter(is_active=True).prefetch_related(
         Prefetch('skills', queryset=Skill.objects.filter(is_active=True))
     )
@@ -86,11 +78,3 @@ def index(request):
         'form': form,
     }
     return render(request, 'index.html', context)
-
-
-
-def track_project_click(request, project_id):
-    click_type = request.GET.get('type', 'demo')
-    project = get_object_or_404(Project, pk=project_id)
-    ProjectClick.objects.create(project=project, click_type=click_type)
-    return JsonResponse({'status': 'success'})
