@@ -1,5 +1,5 @@
 from django.db import models
-import CASCADE
+
 
 
 class ProjectCategory(models.Model):
@@ -51,8 +51,16 @@ class Project(models.Model):
 
 
 
-class MyModel(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+# class ContactSubmission(models.Model):
+#     name = models.CharField(max_length=100)
+#     email = models.EmailField()
+#     subject = models.CharField(max_length=200)
+#     message = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f"{self.name} - {self.subject}"
 
 
 
@@ -243,28 +251,3 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"Message from {self.name} - {self.subject}"
-
-
-
-
-class PageView(models.Model):
-    path = models.CharField(max_length=255)
-    ip_address = models.GenericIPAddressField(null=True, blank=True)
-    user_agent = models.TextField(null=True, blank=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-timestamp']
-
-    def __str__(self):
-        return f"{self.path} - {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
-
-
-class ProjectClick(models.Model):
-    # project = models.ForeignKey('Project', on_delete=CASCADE, related_name='clicks')
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='clicks')
-    click_type = models.CharField(max_length=50, choices=[('github', 'GitHub'), ('demo', 'Live Demo')])
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.project.title} - {self.click_type} ({self.timestamp.strftime('%Y-%m-%d')})"
