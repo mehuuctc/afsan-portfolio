@@ -1,7 +1,5 @@
-import CASCADE
-
 from django.db import models
-
+import CASCADE
 
 
 class ProjectCategory(models.Model):
@@ -52,6 +50,9 @@ class Project(models.Model):
         return []
 
 
+
+class MyModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 
